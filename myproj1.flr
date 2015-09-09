@@ -1,19 +1,22 @@
 
-creditcards(?account,?Name,?balance,?limit):- persons(?Name,?PId), orgn(?Name,?OId).
+card(?account,?Name,?balance,?limit):- persons(?Name,?PId), orgn(?Name,?OId).
 Query3(?card):- creditcards(?card,?Name,?,?),orgn(?Name,?),signer(?Name,?user),creditcards(?,?user,?,?>25000).
-orgn(acme,o1).
-orgn(goodmood,o2).
-orgn(superiorcruft,o3).
-orgn(awesomeproducts,o4).
 
-signer(acme,May).
-signer(acme,Joe).
-signer(goodmood,Ann).
-signer(goodmood,May).
-signer(superiorcruft,bob).
-signer(awesomeproducts,Ann).
-signer(awesomeproducts,Faye).
+orgn(Acme,o1).
+orgn(GoodMood,o2).
+orgn(SuperiorCruft,o3).
+orgn(AwesomeProducts,o4).
+
+signer(Acme,May).
+signer(Acme,Joe).
+signer(GoodMood,Ann).
+signer(GoodMood,May).
+signer(SuperiorCruft,Bob).
+signer(AwesomeProducts,Ann).
+signer(AwesomeProducts,Faye).
 signer(AwesomeProducts,Bill).
+
+card(c1,Acme,10001,11000)
 
 // Queries
 //?- writeln(’\n--- Query 1 answers ---’)@\io,
