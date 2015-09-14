@@ -1,28 +1,67 @@
-
-card(?account,?Name,?balance,?limit):- persons(?Name,?PId), orgn(?Name,?OId).
-Query3(?card):- creditcards(?card,?Name,?,?),orgn(?Name,?),signer(?Name,?user),creditcards(?,?user,?,?>25000).
+person(Ann,p1).
+person(John,p2).
+person(Joe,p3).
+person(May,p4).
+person(Bob,p5).
+person(Faye,p6).
+person(Bill,p7).
+person(Sally,p8).
+person(Miriam,p9).
+person(April,p10).
 
 orgn(Acme,o1).
 orgn(GoodMood,o2).
 orgn(SuperiorCruft,o3).
 orgn(AwesomeProducts,o4).
 
-signer(Acme,May).
-signer(Acme,Joe).
-signer(GoodMood,Ann).
-signer(GoodMood,May).
-signer(SuperiorCruft,Bob).
-signer(AwesomeProducts,Ann).
-signer(AwesomeProducts,Faye).
-signer(AwesomeProducts,Bill).
 
-card(c1,Acme,10001,11000)
+sign(Acme,May).
+sign(Acme,Joe).
+sign(GoodMood,Ann).
+sign(GoodMood,May).
+sign(SuperiorCruft,Bob).
+sign(AwesomeProducts,Ann).
+sign(AwesomeProducts,Faye).
+sign(AwesomeProducts,Bill).
 
-// Queries
-//?- writeln(’\n--- Query 1 answers ---’)@\io,
-//Query1(...).
-//?- writeln(’\n--- Query 2 answers ---’)@\io,
-//Query2(...).
 
-//?- writeln('\n--- Query 3 answers ---')@\io,
-Query3(?card).
+card(c1,Acme,10001,11000).
+card(c2,GoodMood,18000,26000).
+card(c3,SuperiorCruft,27500,28000).
+card(c4,AwesomeProducts,26500,27200).
+card(c5,Ann,1000,26000).
+card(c6,Joe,5000,28000).
+card(c7,Bob,5000,20000).
+card(c8,May,5000,26000).
+card(c9,Faye,3000,25000).
+card(c10,Bill,4000,30000).
+card(c11,Miriam,4000,30000).
+card(c12,April,4000,30000).
+card(c13,Miriam,1000,10000).
+card(c14,Miriam,2000,10000).
+card(c15,Miriam,2000,50000).
+card(c16,Sally,2000,24000).
+card(c17,Sally,0,24000).
+card(c18,Sally,110,2000).
+card(c19,Sally,220,2000).
+
+auser(John,c2).
+auser(Joe,c10).
+auser(May,c10).
+auser(Faye,c12).
+auser(Bill,c5).
+auser(Sally,c1).
+auser(Sally,c2).
+auser(Sally,c3).
+auser(Miriam,c1).
+auser(Miriam,c2).
+auser(Miriam,c3).
+auser(April,c4).
+
+
+Query1(?user(?a,?b),?signer):- auser(?a,?cid), card(?cid,?cName,?bal,?limit),orgn(?cName,?),sign(?cName,?signer),?limit-?bal<1000,person(?a,?b).
+test(?user):- person(?user,?_pid).
+
+?- writeln('\n--- Query 1 answers ---')@\io,
+Query1(?user,?signer)
+
