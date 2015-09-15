@@ -58,7 +58,15 @@ auser(Miriam,c2).
 auser(Miriam,c3).
 auser(April,c4).
 
-Query1(?usr,?siner):- auser(?user,?cid), card(?cid,?cName,?bal,?limit),orgn(?cName,?),sign(?cName,?signer),?limit-?bal<1000,person(?user,?usr),person(?signer,?siner).
+Query1(?usr,?siner):- auser(?user,?cid), card(?cid,?cName,?bal,?limit),orgn(?cName,?_oid),sign(?cName,?signer),?limit-?bal<1000,person(?user,?usr),person(?signer,?siner).
+
+Query2(?user):- count{?cid[?cName]|card(?cid,?cName,?_bal,?_limit)}>=4,  count{?cid1[?aName]|auser(?aName,?cid1)}>=3,  person(?cName,?user) ,person (?aName,?user).
+
 
 ?- writeln('\n--- Query 1 answers ---')@\plg,
 Query1(?usr,?siner).
+
+?- writeln('\n--- Query 2 answers ---')@\plg,
+Query2(?user).
+
+
