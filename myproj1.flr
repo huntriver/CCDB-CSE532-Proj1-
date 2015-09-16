@@ -58,24 +58,27 @@ auser(Miriam,c2).
 auser(Miriam,c3).
 auser(April,c4).
 
-Query1(?usr,?siner):- auser(?user,?cid), card(?cid,?cName,?bal,?limit),orgn(?cName,?_oid),sign(?cName,?signer),?limit-?bal<1000,person(?user,?usr),person(?signer,?siner).
+authuser(?U,?C):- auser(?U,?C); 
+				  sign(?_oName,?U),card(?C,?_oName,?_,?_).
 
-Query2(?user):- count{?cid[?cName]|card(?cid,?cName,?_bal,?_limit)}>=4,  count{?cid1[?aName]|auser(?aName,?cid1)}>=3,  person(?cName,?user) ,person (?aName,?user).
+Query1(?usr,?siner):- auser(?user,?cid), card(?cid,?oName,?bal,?limit),orgn(?oName,?_),sign(?oName,?signer),?limit-?bal<1000,person(?user,?usr),person(?signer,?siner) ,?user!=?signer.
 
-Query3(?card):- card(?card,?oName,?_,?_),  orgn(?oName,?_),forall(?user)^(
+Query2(?user):- count{?cid[?cName]|card(?cid,?cName,?_bal,?_limit)}>=4,  count{?cid1[?aName]|authuser(?aName,?cid1)}>=3,  person(?cName,?user) ,person (?aName,?user).
+
+Query3(?card):- card(?card,?oName,?_,?_),  orgn(?oName,?_),
    sign(?oName,?user) ~~> (
      exist(?_cid1)^(
       card(?_cid1,?user,?_bal,?_limit),  
       ?_limit>=25000
       )
-     )
+     
    ).
 
 
-direct(?U,?C):- auser(?U,?C).
+direct(?U,?C):- authuser(?U,?C).
 
 indirect(?U,?C):- direct(?U,?C);
- 					direct(?U,?C2),card(?C2,?_owner,?_,?_),indirect(?_owener,?C).	
+ 					direct(?U,?C2),card(?C2,?_owner,?_,?_),indirect(?_owner,?C).	
 
  Query4(?user,?card):- indirect(?_U,?card),person(?_U,?user).	
 
