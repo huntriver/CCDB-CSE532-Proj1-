@@ -32,7 +32,7 @@ card(c4,AwesomeProducts,26500,27200).
 card(c5,Ann,1000,26000).
 card(c6,Joe,5000,28000).
 card(c7,Bob,5000,20000).
-card(c8,May,5000,20000).
+card(c8,May,5000,26000).
 card(c9,Faye,3000,25000).
 card(c10,Bill,4000,30000).
 card(c11,Miriam,4000,30000).
@@ -62,8 +62,22 @@ Query1(?usr,?siner):- auser(?user,?cid), card(?cid,?cName,?bal,?limit),orgn(?cNa
 
 Query2(?user):- count{?cid[?cName]|card(?cid,?cName,?_bal,?_limit)}>=4,  count{?cid1[?aName]|auser(?aName,?cid1)}>=3,  person(?cName,?user) ,person (?aName,?user).
 
-Query3(?cid):- card(?cid,?oName,?_bal,?_limit), forall(?user)^exist(?cid1)^(sign(?oName,?user),card(?cid1,?user,?_bal1,?limit),?limit>=25000).
+Query3(?card):- card(?card,?oName,?_,?_),  orgn(?oName,?_),forall(?user)^(
+   sign(?oName,?user) ~~> (
+     exist(?_cid1)^(
+      card(?_cid1,?user,?_bal,?_limit),  
+      ?_limit>=25000
+      )
+     )
+   ).
 
+
+direct(?U,?C):- auser(?U,?C).
+
+indirect(?U,?C):- direct(?U,?C);
+ 					direct(?U,?C2),card(?C2,?_owner,?_,?_),indirect(?_owener,?C).	
+
+ Query4(?user,?card):- indirect(?_U,?card),person(?_U,?user).	
 
 ?- writeln('\n--- Query 1 answers ---')@\plg,
 Query1(?usr,?siner).
@@ -73,3 +87,6 @@ Query2(?user).
 
 ?- writeln('\n--- Query 3 answers ---')@\plg,
 Query3(?card).
+
+?- writeln('\n--- Query 4 answers ---')@\plg,
+Query4(?user,?card).
