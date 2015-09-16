@@ -79,6 +79,10 @@ indirect(?U,?C):- direct(?U,?C);
 
  Query4(?user,?card):- indirect(?_U,?card),person(?_U,?user).	
 
+
+ Query5(?total_balance):- ?total_balance = sum{?bal|card(?cid,?_,?bal,?_), indirect(Joe,?cid)}.
+
+
 ?- writeln('\n--- Query 1 answers ---')@\plg,
 Query1(?usr,?siner).
 
@@ -90,3 +94,6 @@ Query3(?card).
 
 ?- writeln('\n--- Query 4 answers ---')@\plg,
 Query4(?user,?card).
+
+?- writeln('\n--- Query 5 answers ---')@\plg,
+ Query5(?total_balance).
