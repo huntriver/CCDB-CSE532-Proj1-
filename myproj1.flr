@@ -1,3 +1,6 @@
+/* Xinhe Huang 108390641 xinhe.huang@stonybrook.edu */
+/* I pledge my honor that all parts of this project were done by me individually and without collaboration with others. */
+
 person(Ann,p1 - Ann).
 person(John,p2 - John).
 person(Joe,p3 - Joe).
