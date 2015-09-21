@@ -1,92 +1,123 @@
 /* Xinhe Huang 108390641 xinhe.huang@stonybrook.edu */
 /* I pledge my honor that all parts of this project were done by me individually and without collaboration with others. */
 
-person(Ann,p1 - Ann).
-person(John,p2 - John).
-person(Joe,p3 - Joe).
-person(May,p4 - May).
-person(Bob,p5 - Bob).
-person(Faye,p6 - Faye).
-person(Bill,p7 - Bill).
-person(Sally,p8 - Sally).
-person(Miriam,p9 - Miriam).
-person(April,p10 - April).
+/*Person(Name,Id).*/
+/*Key: Id.*/
 
-orgn(Acme,o1).
-orgn(GoodMood,o2).
-orgn(SuperiorCruft,o3).
-orgn(AwesomeProducts,o4).
+Person(Ann,p1 - Ann).
+Person(John,p2 - John).
+Person(Joe,p3 - Joe).
+Person(May,p4 - May).
+Person(Bob,p5 - Bob).
+Person(Faye,p6 - Faye).
+Person(Bill,p7 - Bill).
+Person(Sally,p8 - Sally).
+Person(Miriam,p9 - Miriam).
+Person(April,p10 - April).
+
+/*Orgn(Name,Id).*/
+/*Key: Id.*/
+
+Orgn(Acme,o1).
+Orgn(GoodMood,o2).
+Orgn(SuperiorCruft,o3).
+Orgn(AwesomeProducts,o4).
+
+/*Sign(OName,UName).*/
+/*Key: (OName,UName).*/
+
+Sign(Acme,May).
+Sign(Acme,Joe).
+Sign(GoodMood,Ann).
+Sign(GoodMood,May).
+Sign(SuperiorCruft,Bob).
+Sign(AwesomeProducts,Ann).
+Sign(AwesomeProducts,Faye).
+Sign(AwesomeProducts,Bill).
 
 
-sign(Acme,May).
-sign(Acme,Joe).
-sign(GoodMood,Ann).
-sign(GoodMood,May).
-sign(SuperiorCruft,Bob).
-sign(AwesomeProducts,Ann).
-sign(AwesomeProducts,Faye).
-sign(AwesomeProducts,Bill).
+/*Card(Id,Owner,Balance,Limit).*/
+/*Key: Id.*/
 
+Card(c1,Acme,10001,11000).
+Card(c2,GoodMood,18000,26000).
+Card(c3,SuperiorCruft,27500,28000).
+Card(c4,AwesomeProducts,26500,27200).
+Card(c5,Ann,1000,26000).
+Card(c6,Joe,5000,28000).
+Card(c7,Bob,5000,20000).
+Card(c8,May,5000,26000).
+Card(c9,Faye,3000,25000).
+Card(c10,Bill,4000,30000).
+Card(c11,Miriam,4000,30000).
+Card(c12,April,4000,30000).
+Card(c13,Miriam,1000,10000).
+Card(c14,Miriam,2000,10000).
+Card(c15,Miriam,2000,50000).
+Card(c16,Sally,2000,24000).
+Card(c17,Sally,0,24000).
+Card(c18,Sally,110,2000).
+Card(c19,Sally,220,2000).
 
-card(c1,Acme,10001,11000).
-card(c2,GoodMood,18000,26000).
-card(c3,SuperiorCruft,27500,28000).
-card(c4,AwesomeProducts,26500,27200).
-card(c5,Ann,1000,26000).
-card(c6,Joe,5000,28000).
-card(c7,Bob,5000,20000).
-card(c8,May,5000,26000).
-card(c9,Faye,3000,25000).
-card(c10,Bill,4000,30000).
-card(c11,Miriam,4000,30000).
-card(c12,April,4000,30000).
-card(c13,Miriam,1000,10000).
-card(c14,Miriam,2000,10000).
-card(c15,Miriam,2000,50000).
-card(c16,Sally,2000,24000).
-card(c17,Sally,0,24000).
-card(c18,Sally,110,2000).
-card(c19,Sally,220,2000).
+/*Auser(AName,CId).*/
+/*Key: (AName,CId).*/
 
-auser(John,c2).
-auser(Joe,c10).
-auser(May,c10).
-auser(Faye,c12).
-auser(Bill,c5).
-auser(Sally,c1).
-auser(Sally,c2).
-auser(Sally,c3).
-auser(Miriam,c1).
-auser(Miriam,c2).
-auser(Miriam,c3).
-auser(April,c4).
+Auser(John,c2).
+Auser(Joe,c10).
+Auser(May,c10).
+Auser(Faye,c12).
+Auser(Bill,c5).
+Auser(Sally,c1).
+Auser(Sally,c2).
+Auser(Sally,c3).
+Auser(Miriam,c1).
+Auser(Miriam,c2).
+Auser(Miriam,c3).
+Auser(April,c4).
 
-authuser(?U,?C):- auser(?U,?C); 
-				  sign(?_oName,?U),card(?C,?_oName,?_,?_).
+/*add the person with the signature authority of any orgnization to the authorized user table*/
+authuser(?U,?C):- Auser(?U,?C); 
+				  Sign(?_oName,?U),Card(?C,?_oName,?_,?_).
 
-Query1(?usr,?siner):- auser(?user,?cid), card(?cid,?oName,?bal,?limit),orgn(?oName,?_),sign(?oName,?signer),?limit-?bal<1000,person(?user,?usr),person(?signer,?siner) ,?user!=?signer.
+Query1(?usr,?siner):- 
+	Auser(?user,?cid), 
+	Card(?cid,?oName,?bal,?limit),
+	Orgn(?oName,?_),
+	Sign(?oName,?signer),
+	?limit-?bal<1000,
+	Person(?user,?usr),
+	Person(?signer,?siner) ,
+	?user!=?signer.
 
-Query2(?user):- count{?cid[?cName]|card(?cid,?cName,?_bal,?_limit)}>=4,  count{?cid1[?aName]|authuser(?aName,?cid1)}>=3,  person(?cName,?user) ,person (?aName,?user).
+Query2(?user):- 
+	count{?cid[?cName]|Card(?cid,?cName,?_bal,?_limit)}>=4,  
+	count{?cid1[?aName]|authuser(?aName,?cid1)}>=3,  
+	Person(?cName,?user),
+	Person(?aName,?user).
 
-Query3(?card):- card(?card,?oName,?_,?_),  orgn(?oName,?_),
-   sign(?oName,?user) ~~> (
-     exist(?_cid1)^(
-      card(?_cid1,?user,?_bal,?_limit),  
-      ?_limit>=25000
-      )
+Query3(?card):- 
+	Card(?card,?oName,?_,?_),
+	Orgn(?oName,?_),
+  	Sign(?oName,?user) ~~> (
+  		exist(?_cid1)^(
+  			Card(?_cid1,?user,?_bal,?_limit),  
+      		?_limit>=25000
+      	)
      
    ).
 
-
+/*define direct user and indirect user before querry*/
 direct(?U,?C):- authuser(?U,?C).
 
-indirect(?U,?C):- direct(?U,?C);
- 					direct(?U,?C2),card(?C2,?_owner,?_,?_),indirect(?_owner,?C).	
+indirect(?U,?C):- 
+	direct(?U,?C);
+ 	direct(?U,?C2),Card(?C2,?_owner,?_,?_),indirect(?_owner,?C).	
 
- Query4(?user,?card):- indirect(?_U,?card),person(?_U,?user).	
+Query4(?user,?card):- indirect(?_U,?card),Person(?_U,?user).	
 
 
- Query5(?total_balance):- ?total_balance = sum{?bal|card(?cid,?_,?bal,?_), indirect(Joe,?cid)}.
+Query5(?total_balance):- 
+	?total_balance = sum{?bal|Card(?cid,?_,?bal,?_),indirect(Joe,?cid)}.
 
 
 ?- writeln('\n--- Query 1 answers ---')@\plg,
@@ -102,4 +133,4 @@ Query3(?card).
 Query4(?user,?card).
 
 ?- writeln('\n--- Query 5 answers ---')@\plg,
- Query5(?total_balance).
+Query5(?total_balance).
