@@ -25,30 +25,26 @@ The data items required by your system roughly fall into these categories:
 * Profile information about credit card accounts like account number, the owner, other authorized users. If the owner is an organization then the person with the signature authority is also an authorized user of the card. A credit card must have exactly one owner, but it can have zero or more (other) authorized users.  
 * Financial information about accounts, including the current balance, credit limit. Note that the data model underlying Datalog is essentially relational, so the design of the relations for Project 1 should follow the best practices of relational database design.1 The structure of the above information is such that naive ways of organizing the data in relations will cause violation of 4NF (Fourth Normal Form). So, you should normalize the schema.  
 
-1. Make my changes
-  1. Fix bug
-  2. Improve formatting
-    * Make the headings bigger
-2. Push my commits to GitHub
-3. Open a pull request
-  * Describe my changes
-  * Mention all the members of my team
-    * Ask for feedback
 ##3 Queries
 You are to implement the following queries. You do not need to use function symbols or lists, but for some queries you would need to use negation (\naf), aggregate operators (e.g., avg{... | ...}), quantifiers (forall(...)^... and exist(...)^...), and recursion. You might also need to use some builtins like =, ! =, \is, etc.  
+
 1. Find all pairs of the form (user,signer), where user is an authorized user of an organization’s
 credit card, signer is a person at that organization with signature authority, and the balance
 on the card is within $1,000 of the credit limit. For each user/signer, show Id and Name (see
 the expected output for an example).  
-1. Find all users (Id, Name) who own four or more cards and are authorized non-owner users for
+
+2. Find all users (Id, Name) who own four or more cards and are authorized non-owner users for
 three or more other cards. This query must use aggregates.  
-1. Find the credit cards (acct. numbers) all of whose signers (i.e., people with signature authority
+
+3. Find the credit cards (acct. numbers) all of whose signers (i.e., people with signature authority
 of the organizations that own those cards) also own personal credit cards with credit limits at
 least $25,000. This query must use quantifiers.  
-1. Find all pairs (U,C) where U is an indirect user of the credit card C. (For each user, show Id and
-Name. For credit cards, show the account number.)
-A user U is an indirect user of a credit card C if either  
+
+4. Find all pairs (U,C) where U is an indirect user of the credit card C. (For each user, show Id and
+Name. For credit cards, show the account number.)  
+A user U is an indirect user of a credit card C if either
   * U is a direct user, i.e., U is one of the authorized users of C ; or
-  * U is a direct user of a credit card C2 and the owner of C2 is an indirect user of C.
-1. Find the total of all balances for the credit cards that have Joe as one of the indirect users. This
+  * U is a direct user of a credit card C2 and the owner of C2 is an indirect user of C.  
+
+5. Find the total of all balances for the credit cards that have Joe as one of the indirect users. This
 query can (and should) reuse some of the earlier queries.
